@@ -1,7 +1,6 @@
 pipeline {
 agent any
 
-```
 environment {
     IMAGE_NAME = "registry.lab.local/rme"
     APP_REPO   = "git@github.com/lvajxi03/rme.git"
