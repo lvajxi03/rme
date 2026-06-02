@@ -12,10 +12,7 @@ pipeline {
 	    steps {
 		container('go-builder') {
 		    script {
-			env.VERSION = sh(
-			    script: 'git rev-parse --short HEAD',
-			    returnStdout: true
-			).trim()
+			env.VERSION = env.GIT_COMMIT.take(7)			
 
 			currentBuild.displayName = "#${env.BUILD_NUMBER} ${env.VERSION}"
 			currentBuild.description = "${env.IMAGE_NAME}:${env.VERSION}"
