@@ -10,14 +10,16 @@ pipeline {
     stages {
 	stage('Prepare') {
 	    steps {
-		script {
-		    env.VERSION = sh(
-			script: 'git rev-parse --short HEAD',
-			returnStdout: true
-		    ).trim()
+		container('go-builder') {
+		    script {
+			env.VERSION = sh(
+			    script: 'git rev-parse --short HEAD',
+			    returnStdout: true
+			).trim()
 
-		    currentBuild.displayName = "#${env.BUILD_NUMBER} ${env.VERSION}"
-		    currentBuild.description = "${env.IMAGE_NAME}:${env.VERSION}"
+			currentBuild.displayName = "#${env.BUILD_NUMBER} ${env.VERSION}"
+			currentBuild.description = "${env.IMAGE_NAME}:${env.VERSION}"
+		    }
 		}
 	    }
 	}
@@ -25,7 +27,9 @@ pipeline {
 
 	stage('Build binary') {
 	    steps {
-		sh 'CGO_ENABLED=0 GOOS=linux go build -o rme .'
+		container('go-builder') {
+		    sh 'CGO_ENABLED=0 GOOS=linux go build -o rme .'
+		}
 	    }
 	}
 
