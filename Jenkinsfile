@@ -16,7 +16,7 @@ spec:
       args: ["infinity"]
     - name: jnlp
       image: jenkins/inbound-agent:latest-jdk21
-    - name: kaniko
+    - name: rme-kaniko
       image: registry.lab.local/kaniko-builder:latest
       command: ["sleep"]
       args: ["infinity"]
@@ -39,7 +39,7 @@ spec:
     stages {
 	stage('Prepare') {
 	    steps {
-		container('go-builder') {
+		container('rme-go-builder') {
 		    script {
 			env.VERSION = env.GIT_COMMIT.take(7)			
 
@@ -53,7 +53,7 @@ spec:
 
 	stage('Build binary') {
 	    steps {
-		container('go-builder') {
+		container('rme-go-builder') {
 		    sh '''
 		        git config --global --add safe.directory "$WORKSPACE"
 		        CGO_ENABLED=0 GOOS=linux go build -o rme .
@@ -64,7 +64,7 @@ spec:
 
 	stage('Build and push image') {
 	    steps {
-		container('kaniko') {
+		container('rme-kaniko') {
 		    sh '''
             /kaniko/executor \
               --context "${WORKSPACE}" \
