@@ -74,7 +74,7 @@ func (m *Metric[T]) FormatLabels() string {
 		if !pierwszy {
 			sb.WriteString(", ")
 		}
-		sb.WriteString(fmt.Sprintf("%s=%s", klucz, wartosc))
+		sb.WriteString(fmt.Sprintf("%s=\"%s\"", klucz, wartosc))
 		pierwszy = false
 	}
 	return fmt.Sprintf("{%s}", sb.String())
