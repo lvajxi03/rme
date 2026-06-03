@@ -27,7 +27,7 @@ pipeline {
 		container('go-builder') {
 		    sh '''
 		        git config --global --add safe.directory "$WORKSPACE"
-		        sh 'CGO_ENABLED=0 GOOS=linux go build -o rme .'
+		        CGO_ENABLED=0 GOOS=linux go build -o rme .
                     '''
 		}
 	    }
