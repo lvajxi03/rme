@@ -1,6 +1,35 @@
 pipeline {
     agent {
-	label 'go-builder'
+	kubernetes {
+	    yaml '''
+apiVersion: v1
+kind: Pod
+spec:
+  hostAliases:
+      - ip: "10.10.10.24"
+        hostnames:
+          - "registry.lab.local"
+  containers:
+    - name: rme-go-builder
+      image: registry.lab.local/go-builder:1.26.1
+      command: ["sleep"]
+      args: ["infinity"]
+    - name: jnlp
+      image: jenkins/inbound-agent:latest-jdk21
+    - name: kaniko
+      image: registry.lab.local/kaniko-builder:latest
+      command: ["sleep"]
+      args: ["infinity"]
+      volumeMounts:
+        - name: docker-config
+          mountPath: /kaniko/.docker
+  volumes:
+    - name: docker-config
+      configMap:
+        name: kaniko-docker-config
+'''
+	    
+	}
     }
 
     environment {
