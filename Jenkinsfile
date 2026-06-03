@@ -25,8 +25,10 @@ pipeline {
 	stage('Build binary') {
 	    steps {
 		container('go-builder') {
-		    git config --global --add safe.directory "$WORKSPACE"
-		    sh 'CGO_ENABLED=0 GOOS=linux go build -o rme .'
+		    sh '''
+		        git config --global --add safe.directory "$WORKSPACE"
+		        sh 'CGO_ENABLED=0 GOOS=linux go build -o rme .'
+                    '''
 		}
 	    }
 	}
