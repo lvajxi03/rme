@@ -14,8 +14,6 @@ spec:
       image: registry.lab.local/go-builder:1.26.1
       command: ["sleep"]
       args: ["infinity"]
-    - name: jnlp
-      image: jenkins/inbound-agent:latest-jdk21
     - name: rme-kaniko
       image: registry.lab.local/kaniko-builder:latest
       command: ["sleep"]
